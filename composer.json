@@ -1,0 +1,22 @@
+{
+    "name": "echainr/module-ajaxpriceloader",
+    "description": "Makes pricing load using ajax calls to hole punch full_page and block_html cache for websites that need it.",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Pedro Monteiro",
+            "email": "pedrofernando94@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Echainr\\AjaxPriceLoader\\": ""
+        }
+    }
+}

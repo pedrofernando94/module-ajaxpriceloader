@@ -1,0 +1,6 @@
+<?php
+/** @var \Echainr\AjaxPriceLoader\Block\AjaxPriceLoader $block */
+/** @var \Magento\Catalog\Model\Product $_product */
+$_product = $block->getProduct();
+?>
+<span class="ajax-price-loader" data-product="<?= $_product->getId(); ?>">Loading...</span>
