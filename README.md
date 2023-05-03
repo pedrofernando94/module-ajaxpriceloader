@@ -30,9 +30,17 @@ Just add this to your template (.phtml) file:
 <?php
     echo $block->getLayout()
                ->createBlock(\Echainr\AjaxPriceLoader\Block\AjaxPriceLoader::class)
-               ->setProduct($_product)
+               ->setData('product_id', $_product->getId())
                ->toHtml();
 ?>		
+```
+
+You can also do add it to a container or another block (product in parent block or registry) in your layout (.xml) file:
+
+```
+<block name="product.info.price.ajax.price.loader"
+       class="Echainr\AjaxPriceLoader\Block\AjaxPriceLoader"
+       template="Echainr_AjaxPriceLoader::ajax-price-loader.phtml" />
 ```
 
 ## Specifications

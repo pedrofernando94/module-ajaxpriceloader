@@ -1,0 +1,29 @@
+& when (@media-common = true) {
+
+    .ajax-price-loader {
+        &.loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid  rgba(100,100,100, .3);
+            border-radius: 50%;
+            border-top-color: rgba(100,100,100,1);
+            animation: ajax-price-loader-loading-spin 1s ease-in-out infinite;
+            -webkit-animation: ajax-price-loader-loading-spin 1s ease-in-out infinite;
+        }
+    }
+
+    @keyframes ajax-price-loader-loading-spin {
+        to {
+            transform:  rotate(360deg);
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes ajax-price-loader-loading-spin {
+        to {
+            transform:  rotate(360deg);
+            -webkit-transform: rotate(360deg);
+        }
+    }
+}

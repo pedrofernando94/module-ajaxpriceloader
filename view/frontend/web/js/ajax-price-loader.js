@@ -24,7 +24,7 @@ define([
         },
 
         loadAjaxPriceBoxes: function () {
-            this.product_ids.forEach(function (product_id, index) {
+            this.product_ids.forEach(function (product_id) {
                 $.ajax({
                     type: "GET",
                     url: "/echainr_ajaxpriceloader/ajax/pricerender",
@@ -32,9 +32,9 @@ define([
                         "product_id": product_id
                     },
                     success: function (data) {
-                        if(data.price_box_html) {
-                            $(".ajax-price-loader[data-product=" + product_id + "]").html(data.price_box_html);
-                        }
+                        $(".ajax-price-loader[data-product=" + product_id + "]")
+                            .html(data.price_box_html)
+                            .removeClass('loading');
                     }
                 });
             });

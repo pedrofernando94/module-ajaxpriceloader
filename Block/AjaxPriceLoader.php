@@ -2,60 +2,67 @@
 
 namespace Echainr\AjaxPriceLoader\Block;
 
-use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Pricing\SaleableInterface;
+use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 
-class AjaxPriceLoader extends \Magento\Framework\View\Element\Template {
+class AjaxPriceLoader extends \Magento\Framework\View\Element\Template
+{
 
     /** @var string $_template */
     protected $_template = "Echainr_AjaxPriceLoader::ajax-price-loader.phtml";
 
-    /** @var ProductRepository $_productRepository */
-    protected ProductRepository $_productRepository;
+    /** @var Registry */
+    protected Registry $_registry;
 
-    /** @var Product|null $_product */
-    public mixed $_product = null;
+    /** @var int|null  */
+    private ?int $product_id = null;
 
 
     /**
      * @param Context $context
-     * @param ProductRepository $productRepository
+     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
-        ProductRepository $productRepository,
+        \Magento\Framework\Registry $registry,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->_productRepository = $productRepository;
+        $this->_registry = $registry;
     }
 
     /**
-     * @return Product
-     * @throws NoSuchEntityException
+     * @return int|null
      */
-    public function getProduct(): Product
+    public function getProductId(): ?int
     {
-        if($this->_product === null && $this->getData("product_id")) {
-            $this->_product = $this->_productRepository->getById(
-                $this->getData('product_id')
-            );
+        if ($this->product_id === null) {
+            $this->product_id = $this->getData("product_id");
+            if ($this->product_id === null) {
+                $product = $this->_registry->registry('product');
+                if ($product instanceof SaleableInterface) {
+                    $this->product_id = $product->getId();
+                }
+                if ($this->product_id === null) {
+                    $product = $this->getParentBlock()->getProduct();
+                    if ($product instanceof SaleableInterface) {
+                        $this->product_id = $product->getId();
+                    }
+                }
+            }
         }
-        return $this->_product;
+        return $this->product_id;
     }
 
     /**
-     * @param Product $product
-     * @return AjaxPriceLoader
+     * @param $product_id
+     * @return void
      */
-    public function setProduct(Product $product): AjaxPriceLoader
+    public function setProductId($product_id)
     {
-        $this->_product = $product;
-        return $this;
+        $this->product_id = $product_id;
     }
 }

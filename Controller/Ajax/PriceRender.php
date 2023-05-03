@@ -7,9 +7,9 @@ namespace Echainr\AjaxPriceLoader\Controller\Ajax;
 
 use Exception;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Framework\App\Action\Action;
-use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -83,16 +83,16 @@ class PriceRender extends Action
                 FinalPrice::PRICE_CODE
             );
             return $this->sendJsonResponse($response);
-        }
-        else {
+        } else {
             throw new Exception("The GET param product_id should be set to a valid integer value.");
         }
     }
 
-    private function getPriceBoxHtml(Product $product, string $price_code, array $arguments = []): string {
+    private function getPriceBoxHtml(Product $product, string $price_code, array $arguments = []): string
+    {
         $priceRenderBlock = $this->getLayout()
-                                 ->getBlock('product.price.render.default');
-                                 //->setData('is_product_list', true);
+            ->getBlock('product.price.render.default');
+            //->setData('is_product_list', true);
         return $priceRenderBlock->render(
             $price_code,
             $product,
@@ -116,11 +116,9 @@ class PriceRender extends Action
      */
     private function getLayout(): LayoutInterface
     {
-        if($this->_resultPage === null) {
+        if ($this->_resultPage === null) {
             $this->_resultPage = $this->_resultPageFactory->create();
         }
         return $this->_resultPage->getLayout();
     }
 }
-
-
