@@ -45,7 +45,6 @@ class PriceRender extends Action
     /** @var Page|null $_resultPage */
     private ?Page $_resultPage = null;
 
-
     /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -75,13 +74,19 @@ class PriceRender extends Action
     public function execute(): Json
     {
         $response = [];
-        $product_id = $this->_request->getParam("product_id");
-        if ($product_id) {
-            $product = $this->_productRepository->getById($product_id);
-            $response["price_box_html"] = $this->getPriceBoxHtml(
-                $product,
-                FinalPrice::PRICE_CODE
-            );
+        $product_ids = $this->_request->getParam("product_ids");
+        if ($product_ids) {
+            $product_ids_arr = explode(",", $product_ids);
+            foreach ($product_ids_arr as $product_id) {
+                $product = $this->_productRepository->getById($product_id);
+                $response[] = [
+                    "product_id" => $product_id,
+                    "price_box_html" => $this->getPriceBoxHtml(
+                        $product,
+                        FinalPrice::PRICE_CODE
+                    )
+                ];
+            }
             return $this->sendJsonResponse($response);
         } else {
             throw new Exception("The GET param product_id should be set to a valid integer value.");
@@ -92,7 +97,7 @@ class PriceRender extends Action
     {
         $priceRenderBlock = $this->getLayout()
             ->getBlock('product.price.render.default');
-            //->setData('is_product_list', true);
+        //->setData('is_product_list', true);
         return $priceRenderBlock->render(
             $price_code,
             $product,

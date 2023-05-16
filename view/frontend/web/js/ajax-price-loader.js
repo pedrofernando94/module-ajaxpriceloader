@@ -24,19 +24,20 @@ define([
         },
 
         loadAjaxPriceBoxes: function () {
-            this.product_ids.forEach(function (product_id) {
-                $.ajax({
-                    type: "GET",
-                    url: "/echainr_ajaxpriceloader/ajax/pricerender",
-                    data: {
-                        "product_id": product_id
-                    },
-                    success: function (data) {
-                        $(".ajax-price-loader[data-product=" + product_id + "]")
-                            .html(data.price_box_html)
+            let product_ids = this.product_ids.join(",");
+            $.ajax({
+                type: "GET",
+                url: "/echainr_ajaxpriceloader/ajax/pricerender",
+                data: {
+                    "product_ids": product_ids
+                },
+                success: function (data) {
+                    data.forEach(function (item) {
+                        $(".ajax-price-loader[data-product=" + item.product_id + "]")
+                            .html(item.price_box_html)
                             .removeClass('loading');
-                    }
-                });
+                    });
+                }
             });
         }
 
