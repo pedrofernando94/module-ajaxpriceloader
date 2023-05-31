@@ -28,6 +28,7 @@ define([
             $.ajax({
                 type: "GET",
                 url: "/echainr_ajaxpriceloader/ajax/pricerender",
+                cache: false,
                 data: {
                     "product_ids": product_ids
                 },

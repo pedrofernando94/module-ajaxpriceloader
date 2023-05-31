@@ -101,7 +101,12 @@ class PriceRender extends Action
         return $priceRenderBlock->render(
             $price_code,
             $product,
-            $arguments
+            array_merge(
+                $arguments,
+                [
+                    "cache_lifetime" => false,
+                ]
+            )
         );
     }
 
